@@ -1,5 +1,6 @@
 package com.larrex.BirthdayWisher.wisher.seviceimple;
 
+import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
 import com.larrex.BirthdayWisher.wisher.entity.ApiUser;
 import com.larrex.BirthdayWisher.wisher.repository.ApiUserRepository;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
@@ -27,12 +28,15 @@ public class ApiUserServiceImpl implements ApiUserService {
     }
 
     @Override
-    public ApiUser getApiUser(Long id) {
-        return null;
+    public ApiUser getApiUser(String email) throws ItemNotFoundException {
+        return apiUserRepository.findByEmail(email).orElseThrow(()-> new ItemNotFoundException("No Api user found with email: "+email));
     }
 
     @Override
-    public void delete(String email) {
+    public void delete(String email) throws ItemNotFoundException {
+
+        ApiUser apiUser = getApiUser(email);
+        apiUserRepository.delete(apiUser);
 
     }
 }
