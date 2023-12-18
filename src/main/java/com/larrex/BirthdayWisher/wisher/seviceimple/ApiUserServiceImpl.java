@@ -2,6 +2,7 @@ package com.larrex.BirthdayWisher.wisher.seviceimple;
 
 import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
 import com.larrex.BirthdayWisher.wisher.entity.ApiUser;
+import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
 import com.larrex.BirthdayWisher.wisher.repository.ApiUserRepository;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +17,16 @@ public class ApiUserServiceImpl implements ApiUserService {
     private final ApiUserRepository apiUserRepository;
 
     @Override
-    public void CreateApiUser(String email) {
+    public ResponseMessage CreateApiUser(String email) {
 
-        String key = UUID.randomUUID().toString();
+        String apikey = UUID.randomUUID().toString();
 
         ApiUser apiUser = new ApiUser();
         apiUser.setEmail(email);
-        apiUser.setKey(key);
+        apiUser.setApikey(apikey);
 
         apiUserRepository.save(apiUser);
+        return new ResponseMessage("Api key sent to: "+email);
     }
 
     @Override

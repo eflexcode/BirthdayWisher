@@ -12,6 +12,6 @@ public class ApiUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
-    private String key;
+    private String apikey;
 
 }
