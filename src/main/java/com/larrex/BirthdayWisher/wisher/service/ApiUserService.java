@@ -6,8 +6,8 @@ import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
 
 public interface ApiUserService {
 
-    ResponseMessage CreateApiUser(String email);
+    ResponseMessage createApiUser(String email);
     ApiUser getApiUser(String email) throws ItemNotFoundException;
-    void delete(String email) throws ItemNotFoundException;
+    ResponseMessage delete(String email) throws ItemNotFoundException;
 
 }

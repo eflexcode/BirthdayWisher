@@ -24,4 +24,16 @@ public class UniversalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorObj,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorObj> handleUniversalException(Exception exception,WebRequest request){
+
+        ErrorObj errorObj = new ErrorObj();
+        errorObj.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorObj.setMessage(exception.getMessage());
+        errorObj.setTimestamp(new Date());
+
+        return new ResponseEntity<>(errorObj,HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
 }

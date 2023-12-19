@@ -17,7 +17,7 @@ public class ApiUserServiceImpl implements ApiUserService {
     private final ApiUserRepository apiUserRepository;
 
     @Override
-    public ResponseMessage CreateApiUser(String email) {
+    public ResponseMessage createApiUser(String email) {
 
         String apikey = UUID.randomUUID().toString();
 
@@ -35,10 +35,11 @@ public class ApiUserServiceImpl implements ApiUserService {
     }
 
     @Override
-    public void delete(String email) throws ItemNotFoundException {
+    public ResponseMessage delete(String email) throws ItemNotFoundException {
 
         ApiUser apiUser = getApiUser(email);
         apiUserRepository.delete(apiUser);
 
+        return null;
     }
 }
