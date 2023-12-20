@@ -1,13 +1,23 @@
 package com.larrex.BirthdayWisher.wisher.seviceimple;
 
+import com.larrex.BirthdayWisher.Util;
 import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
 import com.larrex.BirthdayWisher.wisher.entity.ApiUser;
+import com.larrex.BirthdayWisher.wisher.model.AuthMailObj;
 import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
 import com.larrex.BirthdayWisher.wisher.repository.ApiUserRepository;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
+import com.mailjet.client.ClientOptions;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 import java.util.UUID;
 
 @Service
@@ -15,9 +25,10 @@ import java.util.UUID;
 public class ApiUserServiceImpl implements ApiUserService {
 
     private final ApiUserRepository apiUserRepository;
+    private final JavaMailSender javaMailSender;
 
     @Override
-    public ResponseMessage createApiUser(String email) {
+    public ResponseMessage createApiUser(String email) throws MessagingException, UnsupportedEncodingException {
 
         String apikey = UUID.randomUUID().toString();
 
@@ -26,6 +37,14 @@ public class ApiUserServiceImpl implements ApiUserService {
         apiUser.setApikey(apikey);
 
         apiUserRepository.save(apiUser);
+        sendTokenToEmail(email,apikey);
+        return new ResponseMessage("Api key sent to: "+email);
+    }
+
+    @Override
+    public ResponseMessage resendToken(String email) throws ItemNotFoundException, MessagingException, UnsupportedEncodingException {
+        ApiUser apiUser = getApiUser(email);
+        sendTokenToEmail(email,apiUser.getApikey());
         return new ResponseMessage("Api key sent to: "+email);
     }
 
@@ -41,5 +60,36 @@ public class ApiUserServiceImpl implements ApiUserService {
         apiUserRepository.delete(apiUser);
 
         return null;
+    }
+
+    @Override
+    public void sendTokenToEmail(String email, String token) throws MessagingException, UnsupportedEncodingException {
+
+        AuthMailObj authMailObj = new AuthMailObj();
+        authMailObj.setReceiverEmail(email);
+        authMailObj.setSubject("Your Apikey");
+        authMailObj.setBody("");
+        // don't know why any of this are not working
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setSubject("Your Apikey");
+//        simpleMailMessage.setFrom(Util.SENDER);
+//        simpleMailMessage.setTo(email);
+//        simpleMailMessage.setText("Here is your birthday wisher api key: "+token);
+//
+//        javaMailSender.send(simpleMailMessage);
+
+//        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
+//        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage);
+//
+//        mimeMessageHelper.setFrom("ezeifeanyi2026@gmail.com","Birthday wisher Api");
+//        mimeMessageHelper.setText(email);
+//        mimeMessageHelper.setText("Hi here is your birthday apikey: "+token);
+//        javaMailSender.send(mimeMailMessage);
+
+        ClientOptions clientOptions = ClientOptions.builder()
+                .apiKey(System.getenv())
+                .apiSecretKey(System.getenv())
+                .build();
+
     }
 }

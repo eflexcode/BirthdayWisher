@@ -11,6 +11,26 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    username: ezeifeanyi2026@gmail.com
+    password: System.out.println1
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+#            port: 465
+#            class : javax.net.ssl.SSLSocketFactory
+          auth: true
+#          connectiontimeout: 5000
+#          timeout: 5000
+#          writetimeout: 5000
+        starttls:
+          enabled: true
+    transport:
+      protocol: smtp
+
 server:
   port: 6097
   servlet:
