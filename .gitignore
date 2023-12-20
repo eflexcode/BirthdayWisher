@@ -2,7 +2,7 @@ HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
-!**/src/main/java/com/larrex/BirthdayWisher/KeysUtils
+!**/src/main/java/com/larrex/BirthdayWisher/KeysUtils2.java
 !**/src/test/**/target/
 
 ### STS ###
