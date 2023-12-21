@@ -3,6 +3,7 @@ package com.larrex.BirthdayWisher.wisher.controller;
 import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
 import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
+import com.mailjet.client.errors.MailjetException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,12 @@ public class WisherController {
 
     @PostMapping("{email}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage createApiUser(@PathVariable(name = "email") String email) throws MessagingException, UnsupportedEncodingException {
+    public ResponseMessage createApiUser(@PathVariable(name = "email") String email) throws MailjetException, MessagingException, UnsupportedEncodingException {
         return apiUserService.createApiUser(email);
     }
     @PostMapping("resend/{email}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage resendToken(@PathVariable(name = "email") String email) throws ItemNotFoundException, MessagingException, UnsupportedEncodingException {
+    public ResponseMessage resendToken(@PathVariable(name = "email") String email) throws MailjetException, ItemNotFoundException, MessagingException, UnsupportedEncodingException {
         return apiUserService.resendToken(email);
     }
     @DeleteMapping("{email}")

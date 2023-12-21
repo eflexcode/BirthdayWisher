@@ -1,5 +1,6 @@
 package com.larrex.BirthdayWisher.wisher.seviceimple;
 
+import com.larrex.BirthdayWisher.MyApiKeys;
 import com.larrex.BirthdayWisher.Util;
 import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
 import com.larrex.BirthdayWisher.wisher.entity.ApiUser;
@@ -8,9 +9,14 @@ import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
 import com.larrex.BirthdayWisher.wisher.repository.ApiUserRepository;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
 import com.mailjet.client.ClientOptions;
+import com.mailjet.client.MailjetClient;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.transactional.*;
+import com.mailjet.client.transactional.response.SendEmailsResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,7 +34,7 @@ public class ApiUserServiceImpl implements ApiUserService {
     private final JavaMailSender javaMailSender;
 
     @Override
-    public ResponseMessage createApiUser(String email) throws MessagingException, UnsupportedEncodingException {
+    public ResponseMessage createApiUser(String email) throws MailjetException, MessagingException, UnsupportedEncodingException {
 
         String apikey = UUID.randomUUID().toString();
 
@@ -42,7 +48,7 @@ public class ApiUserServiceImpl implements ApiUserService {
     }
 
     @Override
-    public ResponseMessage resendToken(String email) throws ItemNotFoundException, MessagingException, UnsupportedEncodingException {
+    public ResponseMessage resendToken(String email) throws MailjetException, ItemNotFoundException, MessagingException, UnsupportedEncodingException {
         ApiUser apiUser = getApiUser(email);
         sendTokenToEmail(email,apiUser.getApikey());
         return new ResponseMessage("Api key sent to: "+email);
@@ -63,13 +69,13 @@ public class ApiUserServiceImpl implements ApiUserService {
     }
 
     @Override
-    public void sendTokenToEmail(String email, String token) throws MessagingException, UnsupportedEncodingException {
+    public void sendTokenToEmail(String email, String token) throws MailjetException, MessagingException, UnsupportedEncodingException {
 
         AuthMailObj authMailObj = new AuthMailObj();
         authMailObj.setReceiverEmail(email);
         authMailObj.setSubject("Your Apikey");
         authMailObj.setBody("");
-        // don't know why any of this are not working
+//        // don't know why any of this are not working
 //        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 //        simpleMailMessage.setSubject("Your Apikey");
 //        simpleMailMessage.setFrom(Util.SENDER);
@@ -78,18 +84,15 @@ public class ApiUserServiceImpl implements ApiUserService {
 //
 //        javaMailSender.send(simpleMailMessage);
 
-//        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
-//        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage);
-//
-//        mimeMessageHelper.setFrom("ezeifeanyi2026@gmail.com","Birthday wisher Api");
-//        mimeMessageHelper.setText(email);
-//        mimeMessageHelper.setText("Hi here is your birthday apikey: "+token);
-//        javaMailSender.send(mimeMailMessage);
+        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage);
 
-        ClientOptions clientOptions = ClientOptions.builder()
-                .apiKey(System.getenv())
-                .apiSecretKey(System.getenv())
-                .build();
+        mimeMessageHelper.setFrom(Util.SENDER,"BirthdayWisherApi");
+        mimeMessageHelper.setTo(email);
+        mimeMessageHelper.setSubject("Your Apikey");
+        mimeMessageHelper.setText("Hi, here is your BirthdayWisher apikey: "+token);
+        javaMailSender.send(mimeMailMessage);
+
 
     }
 }
