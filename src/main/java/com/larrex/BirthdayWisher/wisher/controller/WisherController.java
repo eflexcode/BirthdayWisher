@@ -1,7 +1,7 @@
 package com.larrex.BirthdayWisher.wisher.controller;
 
 import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
-import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
+import com.larrex.BirthdayWisher.ResponseMessage;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
 import com.mailjet.client.errors.MailjetException;
 import jakarta.mail.MessagingException;

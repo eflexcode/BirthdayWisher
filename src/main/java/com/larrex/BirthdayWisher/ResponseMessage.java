@@ -1,4 +1,4 @@
-package com.larrex.BirthdayWisher.wisher.model;
+package com.larrex.BirthdayWisher;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

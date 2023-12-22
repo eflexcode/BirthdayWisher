@@ -1,29 +1,21 @@
 package com.larrex.BirthdayWisher.wisher.seviceimple;
 
-import com.larrex.BirthdayWisher.MyApiKeys;
 import com.larrex.BirthdayWisher.Util;
 import com.larrex.BirthdayWisher.exception.ItemNotFoundException;
 import com.larrex.BirthdayWisher.wisher.entity.ApiUser;
 import com.larrex.BirthdayWisher.wisher.model.AuthMailObj;
-import com.larrex.BirthdayWisher.wisher.model.ResponseMessage;
+import com.larrex.BirthdayWisher.ResponseMessage;
 import com.larrex.BirthdayWisher.wisher.repository.ApiUserRepository;
 import com.larrex.BirthdayWisher.wisher.service.ApiUserService;
-import com.mailjet.client.ClientOptions;
-import com.mailjet.client.MailjetClient;
 import com.mailjet.client.errors.MailjetException;
-import com.mailjet.client.transactional.*;
-import com.mailjet.client.transactional.response.SendEmailsResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 import java.util.UUID;
 
 @Service
