@@ -52,6 +52,11 @@ public class ApiUserServiceImpl implements ApiUserService {
     }
 
     @Override
+    public ApiUser getApiUserToken(String token) throws ItemNotFoundException {
+        return apiUserRepository.findByApikey(token).orElseThrow(()-> new ItemNotFoundException("No Api user found with token: "+token));
+    }
+
+    @Override
     public ResponseMessage delete(String email) throws ItemNotFoundException {
 
         ApiUser apiUser = getApiUser(email);

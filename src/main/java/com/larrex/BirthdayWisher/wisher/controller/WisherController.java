@@ -18,19 +18,19 @@ public class WisherController {
 
     private final ApiUserService apiUserService;
 
-    @PostMapping("{email}")
+    @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage createApiUser(@PathVariable(name = "email") String email) throws MailjetException, MessagingException, UnsupportedEncodingException {
+    public ResponseMessage createApiUser(@RequestParam(name = "email") String email) throws MailjetException, MessagingException, UnsupportedEncodingException {
         return apiUserService.createApiUser(email);
     }
-    @PostMapping("resend/{email}")
+    @PostMapping("resend")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage resendToken(@PathVariable(name = "email") String email) throws MailjetException, ItemNotFoundException, MessagingException, UnsupportedEncodingException {
+    public ResponseMessage resendToken(@RequestParam(name = "email") String email) throws MailjetException, ItemNotFoundException, MessagingException, UnsupportedEncodingException {
         return apiUserService.resendToken(email);
     }
-    @DeleteMapping("{email}")
+    @DeleteMapping("delete")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessage deleteApiUser(@PathVariable(name = "email") String email) throws ItemNotFoundException {
+    public ResponseMessage deleteApiUser(@RequestParam(name = "email") String email) throws ItemNotFoundException {
         return apiUserService.delete(email);
     }
 

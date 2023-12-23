@@ -24,6 +24,17 @@ public class UniversalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorObj,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ApiKeyException.class)
+    public ResponseEntity<ErrorObj> handleApiKeyException(ApiKeyException exception, WebRequest request){
+
+        ErrorObj errorObj = new ErrorObj();
+        errorObj.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+        errorObj.setMessage(exception.getMessage());
+        errorObj.setTimestamp(new Date());
+
+        return new ResponseEntity<>(errorObj,HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorObj> handleUniversalException(Exception exception,WebRequest request){
 

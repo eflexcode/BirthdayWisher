@@ -19,7 +19,7 @@ public class ScheduleController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage createApiUser(@RequestParam(name = "apikey") String apikey)  {
+    public ResponseMessage createApiUser()  {
         return new ResponseMessage("worked");
     }
 
