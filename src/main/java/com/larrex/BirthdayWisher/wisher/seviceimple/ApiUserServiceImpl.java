@@ -35,14 +35,14 @@ public class ApiUserServiceImpl implements ApiUserService {
         apiUser.setApikey(apikey);
 
         apiUserRepository.save(apiUser);
-        sendTokenToEmail(email,apikey);
+        sendTokenToEmail(email,apikey,apiUser.getId());
         return new ResponseMessage("Api key sent to: "+email);
     }
 
     @Override
     public ResponseMessage resendToken(String email) throws MailjetException, ItemNotFoundException, MessagingException, UnsupportedEncodingException {
         ApiUser apiUser = getApiUser(email);
-        sendTokenToEmail(email,apiUser.getApikey());
+        sendTokenToEmail(email,apiUser.getApikey(),apiUser.getId());
         return new ResponseMessage("Api key sent to: "+email);
     }
 
@@ -62,11 +62,11 @@ public class ApiUserServiceImpl implements ApiUserService {
         ApiUser apiUser = getApiUser(email);
         apiUserRepository.delete(apiUser);
 
-        return null;
+        return new ResponseMessage("Api user deleted");
     }
 
     @Override
-    public void sendTokenToEmail(String email, String token) throws MailjetException, MessagingException, UnsupportedEncodingException {
+    public void sendTokenToEmail(String email, String token,Long apiUserId) throws MailjetException, MessagingException, UnsupportedEncodingException {
 
         AuthMailObj authMailObj = new AuthMailObj();
         authMailObj.setReceiverEmail(email);
@@ -87,7 +87,7 @@ public class ApiUserServiceImpl implements ApiUserService {
         mimeMessageHelper.setFrom(Util.SENDER,"BirthdayWisherApi");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject("Your Apikey");
-        mimeMessageHelper.setText("Hi, here is your BirthdayWisher apikey: "+token);
+        mimeMessageHelper.setText("Hi, here is your BirthdayWisher apikey: "+token+ " and your userid is "+apiUserId);
         javaMailSender.send(mimeMailMessage);
 
 

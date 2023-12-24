@@ -16,6 +16,6 @@ public interface ApiUserService {
     ApiUser getApiUserToken(String token) throws ItemNotFoundException;
     ResponseMessage delete(String email) throws ItemNotFoundException;
 
-    void sendTokenToEmail(String email,String token) throws MessagingException, UnsupportedEncodingException, MailjetException;
+    void sendTokenToEmail(String email,String token,Long apiUserId) throws MessagingException, UnsupportedEncodingException, MailjetException;
 
 }

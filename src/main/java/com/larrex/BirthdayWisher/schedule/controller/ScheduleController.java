@@ -1,5 +1,7 @@
 package com.larrex.BirthdayWisher.schedule.controller;
 
+import com.larrex.BirthdayWisher.schedule.entity.BirthdayPerson;
+import com.larrex.BirthdayWisher.schedule.model.BirthdayPersonModel;
 import com.larrex.BirthdayWisher.schedule.service.ScheduleService;
 import com.larrex.BirthdayWisher.ResponseMessage;
 import com.mailjet.client.errors.MailjetException;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
@@ -19,8 +22,8 @@ public class ScheduleController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMessage createApiUser()  {
-        return new ResponseMessage("worked");
+    public ResponseMessage createApiUser(@RequestBody List<BirthdayPerson> personModel)  {
+        return scheduleService.addBirthdayToQueue(personModel);
     }
 
 }
