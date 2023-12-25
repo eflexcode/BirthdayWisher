@@ -24,5 +24,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new ResponseMessage("All birthdays saved an wishes would be sent in there date ");
     }
 
+    @Override
+    public List<BirthdayPerson> getAllTodayBirthday() {
+        return scheduleRepository.getAllTodayBirthday();
+    }
+
 
 }

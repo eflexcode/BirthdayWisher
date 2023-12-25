@@ -26,4 +26,10 @@ public class ScheduleController {
         return scheduleService.addBirthdayToQueue(personModel);
     }
 
+    @GetMapping("/get/{date}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BirthdayPerson> createApiUser(@PathVariable(name = "date") String date)  {
+        return scheduleService.getAllTodayBirthday();
+    }
+
 }
