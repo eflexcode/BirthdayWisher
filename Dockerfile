@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM openjdk:21
 VOLUME /tmp
 COPY target/*.jar BirthdayWisher.jar
 ENTRYPOINT ["java","-jar","/BirthdayWisher.jar"]
